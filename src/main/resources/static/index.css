@@ -1,0 +1,10 @@
+/* 전체 페이지에 flexbox 레이아웃 적용 */
+
+/* 네비게이션 바 이후의 컨텐츠를 감싸는 container에 상단 여백 추가 */
+.container {
+    text-align: center; /* 텍스트와 버튼을 가운데 정렬 */
+    max-width: 800px;
+    width: 100%;
+    margin-top: auto; /* 네비게이션 바 이후에 공간이 자동으로 채워짐 */
+    padding-top: 20px; /* 네비게이션 바와의 간격을 위해 패딩 추가 */
+}

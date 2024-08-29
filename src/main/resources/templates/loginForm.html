@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/loginForm.css">
+</head>
+<body>
+<div class="login-container">
+    <h2>Login</h2>
+    <form action="/login/login" method="post">
+        <label for="userId">ID:</label>
+        <input type="text" id="userId" name="userId" required th:value="${userId != null ? userId : ''}">
+
+        <label for="pwd">Password:</label>
+        <input type="password" id="pwd" name="pwd" required autocomplete="new-password">
+
+        <div>
+            <input type="checkbox" id="rememberId" name="rememberId">
+            <label for="rememberId">아이디 기억하기</label>
+        </div>
+
+        <div th:if="${errorMessage}" style="color: red;">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <input type="submit" value="Login">
+    </form>
+</div>
+</body>
+</html>

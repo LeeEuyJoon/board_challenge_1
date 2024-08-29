@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.board_week1.UserDao">
+
+    <select id="count" resultType="int">
+        select count(*) from user
+    </select>
+
+    <select id="selectAll" resultType="com.board.board_week1.UserDto">
+        select * from user
+    </select>
+
+    <select id="selectById" resultType="com.board.board_week1.UserDto">
+        select * from user
+        where user_id = #{userId}
+    </select>
+
+    <delete id="deleteAll">
+        delete from user
+    </delete>
+
+    <delete id="deleteById">
+        delete from user
+        where user_id = #{userId}
+    </delete>
+
+    <insert id="insert">
+        insert into user
+        values (#{userId}, #{pwd}, now())
+    </insert>
+
+    <update id="update" >
+        update user
+        set pwd = #{pwd}
+        where user_id = #{userId}
+    </update>
+</mapper>

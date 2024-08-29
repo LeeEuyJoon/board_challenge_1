@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardList</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">HOME</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${session.userId == null}">
+                    <a class="nav-link" href="/login/login">Login</a>
+                </li>
+                <li class="nav-item" th:if="${session.userId != null}">
+                    <a class="nav-link" href="/login/logout">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/board/list">Board</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-center">BoardList</h1>
+
+    <table class="table table-bordered" style="margin: 0 auto; width: 80%;">
+        <thead>
+        <tr>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
+            <th>등록일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${postList}">
+            <td ><a th:text="${post.title}" th:href="@{/board/post(postId=${post.postId})}"></a></td>
+            <td th:text="${post.writer}"></td>
+            <td th:text="${post.viewCnt}"></td>
+            <td th:text="${#dates.format(post.regDate, 'yyyy/MM/dd HH:mm:ss')}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+<!--    페이지 네비게이션바-->
+    <nav class="d-flex justify-content-center">
+        <span th:if="${ph.showPrev}">
+            <a class="page-link" th:href="@{/board/list(page=${ph.beginPage-1}, pageSize=${ph.pageSize})}">
+                &lt;
+            </a>
+        </span>
+        <span th:if="${ph.totalCnt > 0}" th:each="i : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+            <a class="page-link" th:href="@{/board/list(page=${i}, pageSize=${ph.pageSize})}" th:text="${i}"></a>
+        </span>
+        <span th:if="${ph.showNext}">
+            <a class="page-link" th:href="@{/board/list(page=${ph.endPage+1}, pageSize=${ph.pageSize})}">
+                &gt;
+            </a>
+        </span>
+    </nav>
+</div>
+
+<!-- Optional JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

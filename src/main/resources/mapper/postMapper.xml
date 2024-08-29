@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.board_week1.PostDao">
+
+    <select id="count" resultType="int">
+        select count(*) from post
+    </select>
+
+    <select id="selectAll" resultType="com.board.board_week1.PostDto">
+        select * from post
+    </select>
+
+    <select id="selectById" resultType="com.board.board_week1.PostDto">
+        select * from post
+        where post_id = #{postId}
+    </select>
+
+    <delete id="deleteAll">
+        delete from post
+    </delete>
+
+    <delete id="deleteById">
+        delete from post
+        where post_id = #{postId}
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="postId">
+        insert into post(title, content, writer,view_cnt, reg_date, up_date)
+        values (#{title}, #{content}, #{writer},0, now(), now())
+    </insert>
+
+    <update id="update">
+        update post
+        set
+            title = #{title},
+            content = #{content},
+            writer = #{writer},
+            up_date = now()
+    </update>
+
+    <update id="plusView">
+        update post
+        set
+            view_cnt = view_cnt + 1
+        where post_id = #{postId}
+    </update>
+
+    <select id="getPage">
+        select * from post
+        order by reg_date desc, post_id
+        limit #{offset}, #{pageSize}
+    </select>
+</mapper>
