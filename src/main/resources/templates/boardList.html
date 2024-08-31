@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container">
+<div class="container mt-5">
     <!-- 네비게이션 바 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">HOME</a>
@@ -29,30 +29,39 @@
         </div>
     </nav>
 
-    <h1 class="text-center">BoardList</h1>
+    <h1 class="text-center mt-4">1주차 게시판 챌린지 화이팅</h1>
 
-    <table class="table table-bordered" style="margin: 0 auto; width: 80%;">
-        <thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <!-- 게시판 타이틀이나 설명 등을 넣을 수 있음 -->
+        </div>
+        <!-- 글쓰기 버튼 -->
+        <div class="ml-auto">
+            <a class="btn btn-primary" th:href="@{/board/create}" onclick="checkLogin(event)" >글쓰기</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
         <tr>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>조회수</th>
-            <th>등록일</th>
+            <th class="col-6">제목</th> <!-- 제목 열을 6/12 넓이로 설정 -->
+            <th class="col-2">작성자</th> <!-- 작성자 열을 2/12 넓이로 설정 -->
+            <th class="col-2">조회수</th>
+            <th class="col-2">등록일</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="post : ${postList}">
-            <td ><a th:text="${post.title}" th:href="@{/board/post(postId=${post.postId})}"></a></td>
+            <td><a th:text="${post.title}" th:href="@{/board/post(postId=${post.postId},page=${ph.page}, pageSize=${ph.pageSize})}"></a></td>
             <td th:text="${post.writer}"></td>
             <td th:text="${post.viewCnt}"></td>
             <td th:text="${#dates.format(post.regDate, 'yyyy/MM/dd HH:mm:ss')}"></td>
-
         </tr>
         </tbody>
     </table>
 
-<!--    페이지 네비게이션바-->
-    <nav class="d-flex justify-content-center">
+    <!-- 페이지 네비게이션바 -->
+    <nav class="d-flex justify-content-center mt-4">
         <span th:if="${ph.showPrev}">
             <a class="page-link" th:href="@{/board/list(page=${ph.beginPage-1}, pageSize=${ph.pageSize})}">
                 &lt;
@@ -68,6 +77,26 @@
         </span>
     </nav>
 </div>
+
+<!--세션에서 userId 저장-->
+<form>
+    <input id="sessionId" type="hidden" th:value="${userId}">
+</form>
+
+<script>
+    const userId = document.getElementById("sessionId").value;
+    console.log('[session] userId:' + userId);
+</script>
+
+<script>
+    function checkLogin(event) {
+        if (!userId || userId.trim() === "") {
+            alert("로그인이 필요합니다.");
+            event.preventDefault();
+        }
+    }
+</script>
+
 
 <!-- Optional JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

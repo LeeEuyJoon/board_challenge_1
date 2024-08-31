@@ -9,27 +9,115 @@
 <body>
 <div class="container mt-5">
     <div class="card">
-        <div class="card-header">
-            <h2 th:text="${post.title}">게시글 제목</h2>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0 flex-grow-1 display-3"><input type="text" class="form-control-plaintext" id="postTitle" th:value="${post.title}" readonly></h2>
+            <div class="text-right">
+                <h6 th:text="'작성자: ' + ${post.writer}" class="mb-1"></h6>
+                <h6 th:text="'등록 날짜: ' + ${#dates.format(post.regDate, 'yyyy/MM/dd HH:mm:ss')}" class="mb-0"></h6>
+            </div>
         </div>
         <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
+            <textarea class="form-control-plaintext" id="postContent" rows="10" readonly th:text="${post.content}"></textarea>
+            <div class="d-flex justify-content-between mt-4">
                 <div>
-                    <span class="font-weight-bold">작성자:</span> <span th:text="${post.writer}">작성자 이름</span>
+                    <!-- 수정 버튼 -->
+                    <form th:action="@{/board/edit}" method="post" style="display:inline;">
+                        <!-- 데이터 보내기용 히든 인풋 -->
+                        <input th:value="${post.postId}" th:name="postId" type="hidden">
+                        <input id="formTitle" th:value="${post.title}" th:name="title" type="hidden">
+                        <input id="formContent" th:value="${post.content}" th:name="content" type="hidden">
+
+                        <button type="button" class="btn btn-warning" id="editButton" onclick="enableEdit()">수정</button>
+                        <button type="submit" class="btn btn-primary" id="submitButton" style="display: none;">수정 완료</button>
+                    </form>
+
+                    <!-- 삭제 버튼 -->
+                    <form th:action="@{/board/remove}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                        <!-- 데이터 보내기용 히든 인풋 -->
+                        <input th:value="${post.postId}" th:name="postId" type="hidden">
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+
+                    <div class="mt-3">
+                        <a th:href="@{/board/list(page=${page}, pageSize=${pageSize})}" class="btn btn-secondary">목록</a>
+                    </div>
                 </div>
-                <div>
-                    <span class="font-weight-bold">등록일자:</span> <span th:text="${#dates.format(post.regDate, 'yyyy/MM/dd HH:mm:ss')}">2024-07-20</span>
-                </div>
-            </div>
-            <p th:text="${post.content}">여기에 게시글 내용이 표시됩니다.</p>
-            <div class="mt-4">
-                <a th:href="@{/board/post/edit/{id}(id=${post.postId})}" class="btn btn-warning">수정</a>
-                <a th:href="@{/board/post/delete/{id}(id=${post.postId})}" class="btn btn-danger"
-                   onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
             </div>
         </div>
     </div>
 </div>
+
+
+<input id="sessionId" th:value="${sessionId}" type="hidden">
+<input id="userId" th:value="${post.getWriter()}" type="hidden">
+
+
+<!-- JavaScript -->
+<script>
+    function enableEdit() {
+
+        const sessionId = document.getElementById("sessionId").value;
+        const userId = document.getElementById("userId").value;
+
+        console.log("session Id : " + sessionId);
+        console.log("user Id : " + userId);
+
+        if (sessionId != userId) {
+            alert("권한이 없습니다.");
+            return false;
+        }
+
+
+        // title과 content를 수정 가능하게 변경
+        document.getElementById('postTitle').readOnly = false;
+        document.getElementById('postContent').readOnly = false;
+
+        // 부트스트랩 스타일 변경 기능
+        document.getElementById('postTitle').classList.remove('form-control-plaintext');
+        document.getElementById('postTitle').classList.add('form-control');
+        document.getElementById('postContent').classList.remove('form-control-plaintext');
+        document.getElementById('postContent').classList.add('form-control');
+
+        // 수정 버튼을 숨기고, 수정 완료 버튼을 표시
+        document.getElementById('editButton').style.display = 'none';
+        document.getElementById('submitButton').style.display = 'inline-block';
+
+        // 수정된 내용을 히든 인풋에 동기화
+        document.getElementById('formTitle').value = document.getElementById('postTitle').value;
+        document.getElementById('formContent').value = document.getElementById('postContent').value;
+
+        // 내용이 변경될 때마다 히든 인풋도 업데이트되도록 이벤트 추가
+        document.getElementById('postTitle').addEventListener('input', function() {
+            document.getElementById('formTitle').value = this.value;
+        });
+
+        document.getElementById('postContent').addEventListener('input', function() {
+            document.getElementById('formContent').value = this.value;
+        });
+    }
+
+    function confirmDelete() {
+        const sessionId = document.getElementById("sessionId").value;
+        const userId = document.getElementById("userId").value;
+
+        console.log("session Id : " + sessionId);
+        console.log("user Id : " + userId);
+
+        if (confirm('정말 삭제하시겠습니까?')) {
+
+            if (sessionId != userId) {
+                alert("권한이 없습니다.");
+                return false;
+            }
+
+            alert('게시물이 삭제되었습니다.');
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
 
 <!-- Optional JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

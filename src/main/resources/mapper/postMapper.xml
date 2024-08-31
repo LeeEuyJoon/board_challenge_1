@@ -36,8 +36,8 @@
         set
             title = #{title},
             content = #{content},
-            writer = #{writer},
             up_date = now()
+        where post_id = #{postId}
     </update>
 
     <update id="plusView">

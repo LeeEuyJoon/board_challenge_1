@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 등록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap 스타일시트 링크 -->
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">게시글 등록</h2>
+    <form id="postForm" action="/board/create" method="post" onsubmit="return handleFormSubmit()">
+        <div class="form-group">
+            <label for="title">제목:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용:</label>
+            <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">등록</button>
+    </form>
+</div>
+
+<script>
+    function handleFormSubmit() {
+        // 폼이 제출되기 전에 알림창을 표시
+        alert("게시물 등록이 완료되었습니다.");
+        return true; // 폼이 정상적으로 제출되도록 허용
+    }
+</script>
+
+
+<!-- Optional JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcd≧tly/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

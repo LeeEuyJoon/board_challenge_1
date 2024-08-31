@@ -25,4 +25,24 @@ public class BoardServiceImpl implements BoardService {
     public PostDto getPost(int id) {
         return postDao.selectById(id);
     }
+
+    @Override
+    public int insertPost(PostDto postDto) {
+        return postDao.insert(postDto);
+    }
+
+    @Override
+    public int deletePost(int id) {
+        return postDao.deleteById(id);
+    }
+
+    @Override
+    public int updatePost(PostDto postDto) {
+        return postDao.update(postDto);
+    }
+
+    @Override
+    public int plusView(PostDto postDto) {
+        return postDao.plusView(postDto);
+    }
 }
