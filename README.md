@@ -1,4 +1,4 @@
-# board_challenge_week1
+# board_challenge_1
 ## Board Challenge Week1 (Spring Boot + MyBatis -> CRUD, Pagination, Login, Exception Handling)
 
 
